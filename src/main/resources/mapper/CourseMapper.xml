@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljx.mapper.CourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ljx.entity.Course">
+        <id column="id" property="id" />
+        <result column="course_name" property="courseName" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, course_name, description
+    </sql>
+
+
+    <select id="select" resultType="com.ljx.entity.StudentCourse">
+        SELECT
+            c.id,c.course_name,c.description,
+            s.name AS studentName  -- 直接通过JOIN关联学生表取姓名
+        FROM course c
+                 INNER JOIN student s
+                            ON s.course_id = c.id  -- 新增学生表JOIN，替代子查询
+        where s.stu_id = #{studentId}  -- MyBatis-Plus 条件构造器占位符
+    </select>
+
+    <select id="selectC" resultType="com.ljx.entity.TeacherCourse">
+        SELECT
+            t.name,
+            c.course_name,c.exam_time-- 直接通过JOIN关联学生表取姓名
+        FROM course c
+                 INNER JOIN teacher t
+                            ON t.teach_course_id = c.id  -- 新增学生表JOIN，替代子查询
+        where t.work_id = #{workId}  -- MyBatis-Plus 条件构造器占位符
+    </select>
+
+</mapper>

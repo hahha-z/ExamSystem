@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljx.mapper.ExamSubmissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ljx.entity.ExamSubmission">
+        <id column="id" property="id" />
+        <result column="course_id" property="courseId" />
+        <result column="student_id" property="studentId" />
+        <result column="score" property="score" />
+        <result column="submission_time" property="submissionTime" />
+        <result column="retake_count" property="retakeCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, course_id, student_id, score, submission_time, retake_count
+    </sql>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljx.mapper.ExamResultMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ljx.entity.ExamResult">
+        <id column="id" property="id" />
+        <result column="student_id" property="studentId" />
+        <result column="course_id" property="courseId" />
+        <result column="score" property="score" />
+        <result column="exam_time" property="examTime" />
+        <result column="retake_count" property="retakeCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, student_id, course_id, score, exam_time, retake_count
+    </sql>
+
+
+    <select id="pageCC" resultType="com.ljx.entity.StudentStatus2">
+        SELECT
+            es.student_id,es.course_id,es.has_taken,
+            er.score,er.retake_count,er.id,
+            DATE_FORMAT(er.exam_time, '%Y-%m-%d') AS time,
+            s.name AS studentName  -- 直接通过JOIN关联学生表取姓名
+        FROM exam_result er
+            INNER JOIN exam_status es
+        ON er.student_id = es.student_id
+            AND es.course_id = er.course_id
+--             AND er.score = es.score  -- 原关联条件保留
+            INNER JOIN student s
+            ON s.stu_id = es.student_id  -- 新增学生表JOIN，替代子查询
+            ${ew.customSqlSegment}  -- MyBatis-Plus 条件构造器占位符
+        ORDER BY er.exam_time DESC
+    </select>
+</mapper>

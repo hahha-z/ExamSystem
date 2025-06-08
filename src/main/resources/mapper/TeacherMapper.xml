@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljx.mapper.TeacherMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ljx.entity.Teacher">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="work_id" property="workId" />
+        <result column="college_id" property="collegeId" />
+        <result column="teach_course_id" property="teachCourseId" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, sex, phone, work_id, college_id, teach_course_id, role_id
+    </sql>
+
+    <select id="login" resultMap="BaseResultMap">
+        select * from teacher where no = #{no} and password = #{password}
+    </select>
+
+    <select id="pageCC" resultType="com.ljx.entity.TeacherCourse">
+        select t.*,
+               c.course_name
+               from teacher t
+                        INNER JOIN course c
+                                   ON t.teach_course_id = c.id
+                   ${ew.customSqlSegment}
+    </select>
+
+</mapper>
